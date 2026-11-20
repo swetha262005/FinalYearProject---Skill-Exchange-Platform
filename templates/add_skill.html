@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Add Skill - LearnMate{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-container">
+        <h2><i class="fas fa-plus-circle"></i> Add a New Skill</h2>
+        <form method="POST" action="{{ url_for('add_skill') }}">
+            <div class="form-group">
+                <label for="skill_name"><i class="fas fa-lightbulb"></i> Skill Name *</label>
+                <input type="text" class="form-control" id="skill_name" name="skill_name" 
+                       placeholder="e.g., Python Programming, Web Design, Spanish" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="category"><i class="fas fa-folder"></i> Category *</label>
+                <select class="form-control" id="category" name="category" required>
+                    <option value="">Select Category</option>
+                    <option value="Programming">Programming</option>
+                    <option value="Web Development">Web Development</option>
+                    <option value="Design">Design</option>
+                    <option value="Languages">Languages</option>
+                    <option value="Music">Music</option>
+                    <option value="Arts">Arts</option>
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Science">Science</option>
+                    <option value="Writing">Writing</option>
+                    <option value="Business">Business</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="proficiency_level"><i class="fas fa-chart-line"></i> Proficiency Level *</label>
+                <select class="form-control" id="proficiency_level" name="proficiency_level" required>
+                    <option value="">Select Level</option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                    <option value="Expert">Expert</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="description"><i class="fas fa-align-left"></i> Description</label>
+                <textarea class="form-control" id="description" name="description" rows="4"
+                          placeholder="Describe what you can teach, your experience, teaching style, etc."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="availability"><i class="fas fa-clock"></i> Availability</label>
+                <input type="text" class="form-control" id="availability" name="availability"
+                       placeholder="e.g., Weekends, Mon-Wed 6-8 PM, Flexible">
+            </div>
+            
+            <button type="submit" class="btn btn-success" style="width: 100%; padding: 15px;">
+                <i class="fas fa-plus"></i> Add Skill
+            </button>
+        </form>
+        
+        <p style="text-align: center; margin-top: 20px;">
+            <a href="{{ url_for('dashboard') }}"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

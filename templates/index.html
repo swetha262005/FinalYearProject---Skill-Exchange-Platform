@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <h1><i class="fas fa-exchange-alt"></i> Welcome to LearnMate</h1>
+        <p>Exchange Skills, Share Knowledge, Grow Together</p>
+        <p>A platform where students can learn from each other without spending money</p>
+        <div>
+            <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started</a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline">Login</a>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+    <div class="container">
+        <h2 class="section-title">Why Choose LearnMate?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-handshake"></i>
+                <h3>Skill Exchange</h3>
+                <p>Trade your skills with fellow students. Teach what you know, learn what you need.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-users"></i>
+                <h3>Community Driven</h3>
+                <p>Connect with students from your college and build a collaborative learning community.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-dollar-sign" style="text-decoration: line-through;"></i>
+                <h3>Completely Free</h3>
+                <p>No payment required. Exchange skills based on mutual interest and availability.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-search"></i>
+                <h3>Smart Matching</h3>
+                <p>Our platform helps you find the perfect skill exchange partner based on your needs.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-calendar-check"></i>
+                <h3>Flexible Learning</h3>
+                <p>Learn at your own pace. Schedule sessions that work for both parties.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-certificate"></i>
+                <h3>Diverse Skills</h3>
+                <p>From programming to design, languages to music - learn anything you want!</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="features" style="background-color: #f4f7f9;">
+    <div class="container">
+        <h2 class="section-title">How It Works</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-user-plus"></i>
+                <h3>1. Sign Up</h3>
+                <p>Create your free account and build your profile with your academic details.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-list-alt"></i>
+                <h3>2. List Your Skills</h3>
+                <p>Add skills you can teach and skills you want to learn.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-search-plus"></i>
+                <h3>3. Find Matches</h3>
+                <p>Browse and discover students who want to learn what you teach and vice versa.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-comments"></i>
+                <h3>4. Connect & Exchange</h3>
+                <p>Send exchange requests and start learning from each other!</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="hero" style="padding: 60px 0;">
+    <div class="container">
+        <h2>Ready to Start Learning?</h2>
+        <p>Join hundreds of students already exchanging skills on LearnMate</p>
+        <a href="{{ url_for('register') }}" class="btn btn-primary" style="font-size: 1.2rem; padding: 15px 40px;">
+            <i class="fas fa-rocket"></i> Join Now - It's Free!
+        </a>
+    </div>
+</section>
+{% endblock %}

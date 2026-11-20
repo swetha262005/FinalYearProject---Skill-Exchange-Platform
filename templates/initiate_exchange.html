@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Initiate Exchange - LearnMate{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-container" style="max-width: 700px;">
+        <h2><i class="fas fa-handshake"></i> Initiate Skill Exchange</h2>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 30px;">
+            <h3 style="margin-bottom: 15px;">Exchange Details</h3>
+            <p><strong><i class="fas fa-user"></i> With:</strong> {{ skill.user.full_name }}</p>
+            <p><strong><i class="fas fa-university"></i> From:</strong> {{ skill.user.college or 'N/A' }}</p>
+            <p><strong><i class="fas fa-lightbulb"></i> They teach:</strong> {{ skill.skill_name }}</p>
+            <p><strong><i class="fas fa-chart-line"></i> Level:</strong> 
+                <span class="skill-badge badge-{{ skill.proficiency_level|lower }}">
+                    {{ skill.proficiency_level }}
+                </span>
+            </p>
+            {% if skill.description %}
+                <p><strong><i class="fas fa-info-circle"></i> About:</strong> {{ skill.description }}</p>
+            {% endif %}
+            {% if skill.availability %}
+                <p><strong><i class="fas fa-clock"></i> Available:</strong> {{ skill.availability }}</p>
+            {% endif %}
+        </div>
+        
+        <form method="POST" action="{{ url_for('initiate_exchange', skill_id=skill.id) }}">
+            <div class="form-group">
+                <label for="my_skill"><i class="fas fa-star"></i> What skill will you offer in exchange? *</label>
+                <select class="form-control" id="my_skill" name="my_skill" required>
+                    <option value="">Select a skill you offer</option>
+                    {% for my_skill in my_skills %}
+                        <option value="{{ my_skill.skill_name }}">
+                            {{ my_skill.skill_name }} ({{ my_skill.proficiency_level }})
+                        </option>
+                    {% endfor %}
+                </select>
+                {% if not my_skills %}
+                    <small style="color: #dc3545;">
+                        You haven't added any skills yet. 
+                        <a href="{{ url_for('add_skill') }}">Add a skill</a> first.
+                    </small>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="message"><i class="fas fa-comment"></i> Message (Optional)</label>
+                <textarea class="form-control" id="message" name="message" rows="5"
+                          placeholder="Introduce yourself, explain why you want to learn this skill, suggest meeting times, etc."></textarea>
+            </div>
+            
+            <div style="background: #e3f2fd; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+                <p style="margin: 0; font-size: 0.95rem;">
+                    <i class="fas fa-info-circle"></i> <strong>Tip:</strong> 
+                    Write a friendly message explaining why you're interested and what you can offer. 
+                    This increases your chances of getting a positive response!
+                </p>
+            </div>
+            
+            <button type="submit" class="btn btn-success" style="width: 100%; padding: 15px;" 
+                    {% if not my_skills %}disabled{% endif %}>
+                <i class="fas fa-paper-plane"></i> Send Exchange Request
+            </button>
+        </form>
+        
+        <p style="text-align: center; margin-top: 20px;">
+            <a href="{{ url_for('browse_skills') }}"><i class="fas fa-arrow-left"></i> Back to Browse</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

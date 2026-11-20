@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Skills - LearnMate{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 30px;">
+    <h1 style="text-align: center; margin-bottom: 30px;">
+        <i class="fas fa-search"></i> Browse Available Skills
+    </h1>
+
+    <!-- Search and Filter -->
+    <div class="card" style="margin-bottom: 30px;">
+        <div class="card-body">
+            <form method="GET" action="{{ url_for('browse_skills') }}" style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 15px;">
+                <div class="form-group" style="margin: 0;">
+                    <input type="text" class="form-control" id="searchSkills" name="search" 
+                           placeholder="Search skills..." value="{{ request.args.get('search', '') }}">
+                </div>
+                <div class="form-group" style="margin: 0;">
+                    <select class="form-control" id="categoryFilter" name="category">
+                        <option value="">All Categories</option>
+                        {% for cat in categories %}
+                            <option value="{{ cat[0] }}" {% if request.args.get('category') == cat[0] %}selected{% endif %}>
+                                {{ cat[0] }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Skills Grid -->
+    {% if skills %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px;">
+            {% for skill in skills %}
+                <div class="skill-card" data-category="{{ skill.category }}">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div>
+                            <h3 class="skill-name">{{ skill.skill_name }}</h3>
+                            <p style="margin: 5px 0; color: #666;">
+                                <i class="fas fa-user"></i> {{ skill.user.full_name }}
+                            </p>
+                            {% if skill.user.college %}
+                                <p style="margin: 5px 0; color: #666; font-size: 0.9rem;">
+                                    <i class="fas fa-university"></i> {{ skill.user.college }}
+                                </p>
+                            {% endif %}
+                        </div>
+                        <span class="skill-badge badge-{{ skill.proficiency_level|lower }}">
+                            {{ skill.proficiency_level }}
+                        </span>
+                    </div>
+                    
+                    <span class="skill-badge" style="background: #e3f2fd; color: #1976d2; margin-top: 10px;">
+                        <i class="fas fa-folder"></i> {{ skill.category }}
+                    </span>
+                    
+                    <p class="skill-description" style="margin-top: 15px;">{{ skill.description or 'No description provided.' }}</p>
+                    
+                    {% if skill.availability %}
+                        <p style="margin-top: 10px;">
+                            <i class="fas fa-clock"></i> <strong>Available:</strong> {{ skill.availability }}
+                        </p>
+                    {% endif %}
+                    
+                    <div style="margin-top: 15px;">
+                        <a href="{{ url_for('initiate_exchange', skill_id=skill.id) }}" 
+                           class="btn btn-success" style="width: 100%;">
+                            <i class="fas fa-handshake"></i> Request Exchange
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-search"></i>
+            <h3>No skills found</h3>
+            <p>Try adjusting your search or filter criteria.</p>
+            <a href="{{ url_for('browse_skills') }}" class="btn btn-primary">Clear Filters</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

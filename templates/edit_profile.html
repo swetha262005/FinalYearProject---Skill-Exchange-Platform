@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile - LearnMate{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-container">
+        <h2><i class="fas fa-edit"></i> Edit Your Profile</h2>
+        <form method="POST" action="{{ url_for('edit_profile') }}">
+            <div class="form-group">
+                <label for="full_name"><i class="fas fa-id-card"></i> Full Name *</label>
+                <input type="text" class="form-control" id="full_name" name="full_name" 
+                       value="{{ user.full_name }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Email *</label>
+                <input type="email" class="form-control" id="email" name="email" 
+                       value="{{ user.email }}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="college"><i class="fas fa-university"></i> College/Institution</label>
+                <input type="text" class="form-control" id="college" name="college" 
+                       value="{{ user.college or '' }}">
+            </div>
+            
+            <div class="form-group">
+                <label for="department"><i class="fas fa-book"></i> Department</label>
+                <input type="text" class="form-control" id="department" name="department" 
+                       value="{{ user.department or '' }}">
+            </div>
+            
+            <div class="form-group">
+                <label for="year"><i class="fas fa-calendar"></i> Year/Semester</label>
+                <select class="form-control" id="year" name="year">
+                    <option value="">Select Year</option>
+                    <option value="1st Year" {% if user.year == '1st Year' %}selected{% endif %}>1st Year</option>
+                    <option value="2nd Year" {% if user.year == '2nd Year' %}selected{% endif %}>2nd Year</option>
+                    <option value="3rd Year" {% if user.year == '3rd Year' %}selected{% endif %}>3rd Year</option>
+                    <option value="4th Year" {% if user.year == '4th Year' %}selected{% endif %}>4th Year</option>
+                    <option value="Graduate" {% if user.year == 'Graduate' %}selected{% endif %}>Graduate</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn btn-success" style="width: 100%; padding: 15px;">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+        </form>
+        
+        <p style="text-align: center; margin-top: 20px;">
+            <a href="{{ url_for('profile') }}"><i class="fas fa-arrow-left"></i> Back to Profile</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

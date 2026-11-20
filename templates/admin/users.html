@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Users - Admin - LearnMate{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 30px;">
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-users"></i> All Users
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary" style="float: right;">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+        <div class="card-body">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>College</th>
+                            <th>Department</th>
+                            <th>Year</th>
+                            <th>Skills</th>
+                            <th>Joined</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>
+                                    {{ user.username }}
+                                    {% if user.is_admin %}
+                                        <span class="badge-expert" style="margin-left: 5px;">Admin</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ user.full_name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.college or 'N/A' }}</td>
+                                <td>{{ user.department or 'N/A' }}</td>
+                                <td>{{ user.year or 'N/A' }}</td>
+                                <td>
+                                    <span class="skill-badge" style="background: #e3f2fd; color: #1976d2;">
+                                        {{ user.skills_offered|length }} offered
+                                    </span>
+                                    <span class="skill-badge" style="background: #fff3e0; color: #f57c00;">
+                                        {{ user.skills_wanted|length }} wanted
+                                    </span>
+                                </td>
+                                <td>{{ user.created_at.strftime('%Y-%m-%d') }}</td>
+                                <td>
+                                    {% if not user.is_admin %}
+                                        <a href="{{ url_for('admin_delete_user', user_id=user.id) }}" 
+                                           class="btn btn-danger btn-delete"
+                                           onclick="return confirm('Are you sure you want to delete {{ user.username }}? This will also delete all their skills and exchanges.');">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </a>
+                                    {% else %}
+                                        <span style="color: #999;">Protected</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

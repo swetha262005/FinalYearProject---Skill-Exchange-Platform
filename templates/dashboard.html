@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - LearnMate{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <div class="container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <h1><i class="fas fa-th-large"></i> Welcome, {{ user.full_name }}!</h1>
+            <p>Your personalized skill exchange dashboard</p>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="dashboard-grid">
+            <div class="stat-card">
+                <i class="fas fa-lightbulb"></i>
+                <h3>{{ my_skills|length }}</h3>
+                <p>Skills I Offer</p>
+                <a href="{{ url_for('add_skill') }}" class="btn btn-primary">Add Skill</a>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-search"></i>
+                <h3>{{ my_requests|length }}</h3>
+                <p>Skills I Want</p>
+                <a href="{{ url_for('add_request') }}" class="btn btn-info">Add Request</a>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-exchange-alt"></i>
+                <h3>{{ pending_exchanges|length }}</h3>
+                <p>Pending Exchanges</p>
+                <a href="{{ url_for('browse_skills') }}" class="btn btn-success">Browse Skills</a>
+            </div>
+        </div>
+
+        <!-- My Skills -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-star"></i> My Skills
+                <a href="{{ url_for('add_skill') }}" class="btn btn-primary" style="float: right;">
+                    <i class="fas fa-plus"></i> Add New
+                </a>
+            </div>
+            <div class="card-body">
+                {% if my_skills %}
+                    {% for skill in my_skills %}
+                        <div class="skill-card" data-category="{{ skill.category }}">
+                            <h3 class="skill-name">{{ skill.skill_name }}</h3>
+                            <span class="skill-badge badge-{{ skill.proficiency_level|lower }}">
+                                {{ skill.proficiency_level }}
+                            </span>
+                            <span class="skill-badge" style="background: #e3f2fd; color: #1976d2;">
+                                {{ skill.category }}
+                            </span>
+                            <p class="skill-description">{{ skill.description }}</p>
+                            <p><i class="fas fa-clock"></i> <strong>Availability:</strong> {{ skill.availability }}</p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>You haven't added any skills yet. Add your first skill to get started!</p>
+                        <a href="{{ url_for('add_skill') }}" class="btn btn-primary">Add Your First Skill</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Skills I Want to Learn -->
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-search"></i> Skills I Want to Learn
+                <a href="{{ url_for('add_request') }}" class="btn btn-info" style="float: right;">
+                    <i class="fas fa-plus"></i> Add New
+                </a>
+            </div>
+            <div class="card-body">
+                {% if my_requests %}
+                    {% for request in my_requests %}
+                        <div class="skill-card">
+                            <h3>{{ request.skill_name }}</h3>
+                            <span class="skill-badge" style="background: #fff3e0; color: #f57c00;">
+                                {{ request.category }}
+                            </span>
+                            {% if request.urgency %}
+                                <span class="skill-badge" style="background: #ffebee; color: #c62828;">
+                                    {{ request.urgency }}
+                                </span>
+                            {% endif %}
+                            <p>{{ request.description }}</p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <p>You haven't added any skill requests yet. Let others know what you want to learn!</p>
+                        <a href="{{ url_for('add_request') }}" class="btn btn-info">Add Your First Request</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Potential Matches -->
+        {% if matches %}
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-fire"></i> Potential Matches for You!
+            </div>
+            <div class="card-body">
+                {% for match in matches %}
+                    <div class="skill-card">
+                        <h3>{{ match.skill.skill_name }}</h3>
+                        <p><i class="fas fa-user"></i> <strong>{{ match.user.full_name }}</strong> from {{ match.user.college }}</p>
+                        <span class="skill-badge badge-{{ match.skill.proficiency_level|lower }}">
+                            {{ match.skill.proficiency_level }}
+                        </span>
+                        <p>{{ match.skill.description }}</p>
+                        <p><i class="fas fa-clock"></i> Available: {{ match.skill.availability }}</p>
+                        <a href="{{ url_for('initiate_exchange', skill_id=match.skill.id) }}" class="btn btn-success">
+                            <i class="fas fa-handshake"></i> Request Exchange
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Pending Exchanges -->
+        {% if pending_exchanges %}
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-hourglass-half"></i> Pending Exchanges
+            </div>
+            <div class="card-body">
+                {% for exchange in pending_exchanges %}
+                    <div class="skill-card">
+                        {% if exchange.initiator_id == user.id %}
+                            <h3><i class="fas fa-arrow-right"></i> Sent to {{ exchange.receiver.full_name }}</h3>
+                            <p><strong>You offer:</strong> {{ exchange.initiator_skill }}</p>
+                            <p><strong>They offer:</strong> {{ exchange.receiver_skill }}</p>
+                        {% else %}
+                            <h3><i class="fas fa-arrow-left"></i> Received from {{ exchange.initiator.full_name }}</h3>
+                            <p><strong>They offer:</strong> {{ exchange.initiator_skill }}</p>
+                            <p><strong>You offer:</strong> {{ exchange.receiver_skill }}</p>
+                        {% endif %}
+                        
+                        {% if exchange.message %}
+                            <p><i class="fas fa-comment"></i> {{ exchange.message }}</p>
+                        {% endif %}
+                        
+                        <span class="status-badge status-{{ exchange.status }}">{{ exchange.status|capitalize }}</span>
+                        
+                        {% if exchange.receiver_id == user.id and exchange.status == 'pending' %}
+                            <div style="margin-top: 10px;">
+                                <a href="{{ url_for('manage_exchange', exchange_id=exchange.id, action='accept') }}" 
+                                   class="btn btn-success">
+                                    <i class="fas fa-check"></i> Accept
+                                </a>
+                                <a href="{{ url_for('manage_exchange', exchange_id=exchange.id, action='reject') }}" 
+                                   class="btn btn-danger">
+                                    <i class="fas fa-times"></i> Reject
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

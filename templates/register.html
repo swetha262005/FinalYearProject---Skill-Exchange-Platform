@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Register - LearnMate{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-container">
+        <h2><i class="fas fa-user-plus"></i> Create Your Account</h2>
+        <form method="POST" action="{{ url_for('register') }}">
+            <div class="form-group">
+                <label for="username"><i class="fas fa-user"></i> Username *</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email"><i class="fas fa-envelope"></i> Email *</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="full_name"><i class="fas fa-id-card"></i> Full Name *</label>
+                <input type="text" class="form-control" id="full_name" name="full_name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="college"><i class="fas fa-university"></i> College/Institution</label>
+                <input type="text" class="form-control" id="college" name="college" placeholder="e.g., ABC College">
+            </div>
+            
+            <div class="form-group">
+                <label for="department"><i class="fas fa-book"></i> Department</label>
+                <input type="text" class="form-control" id="department" name="department" placeholder="e.g., Computer Science">
+            </div>
+            
+            <div class="form-group">
+                <label for="year"><i class="fas fa-calendar"></i> Year/Semester</label>
+                <select class="form-control" id="year" name="year">
+                    <option value="">Select Year</option>
+                    <option value="1st Year">1st Year</option>
+                    <option value="2nd Year">2nd Year</option>
+                    <option value="3rd Year">3rd Year</option>
+                    <option value="4th Year">4th Year</option>
+                    <option value="Graduate">Graduate</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="password"><i class="fas fa-lock"></i> Password *</label>
+                <input type="password" class="form-control" id="password" name="password" required minlength="6">
+                <small style="color: #666;">Minimum 6 characters</small>
+                <div id="passwordStrength" style="height: 5px; margin-top: 5px; border-radius: 3px; transition: all 0.3s;"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm_password"><i class="fas fa-lock"></i> Confirm Password *</label>
+                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px;">
+                <i class="fas fa-user-plus"></i> Register
+            </button>
+        </form>
+        
+        <p style="text-align: center; margin-top: 20px;">
+            Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
